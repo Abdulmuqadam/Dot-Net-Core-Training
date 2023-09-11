@@ -1,0 +1,146 @@
+Scaffolding:-
+	is a technique used to generate code at desgin time to support a number of common application scenarios when working with entity framework core.
+
+Attributes in Controller:
+	The Microsoft.AspNetCore.Mvc namespace provides attributes that can be used to configure the behavior of web API controllers and action methods. 
+The following example uses attributes to specify the supported HTTP action verb and any known HTTP status codes that could be returned:
+
+Example:
+
+[HttpPost]
+[ProducesResponseType(StatusCodes.Status201Created)]
+[ProducesResponseType(StatusCodes.Status400BadRequest)]
+public ActionResult<Pet> Create(Pet pet)
+{
+    pet.Id = _petsInMemoryStore.Any() ? 
+             _petsInMemoryStore.Max(p => p.Id) + 1 : 1;
+    _petsInMemoryStore.Add(pet);
+
+    return CreatedAtAction(nameof(GetById), new { id = pet.Id }, pet);
+}
+
+Controller in C#:-
+	Controller is defined as the group of actions and method. Web api controller should derive fromm ControllerBase rather from Controller, Controller Derived 
+From the Controller supports for views, so it's for handling Web Pages rather then Web Api requests. if the same controller must support views and web Apis, derive 
+from Controller.Job of a Controller is to receive a request that match a paricular path and different operation are defined that are able to inspect the request carry 
+out any necessary business logic these operations are called action methods
+
+Example:
+
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ControllersAndActions.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class RecipesController : ControllerBase
+    {
+        [HttpGet]
+        public string[] GetDishes()
+        {
+            string[] dishes = { "Biryani", "Karahi", "Palao" };
+            return dishes;
+        }
+    }
+}
+
+[ApiController]
+	The [ApiController] attribute can be applied to a controller class to enable the following opinionated, API-specific behaviors:
+1.Attribute routing requirement
+2.Automatic HTTP 400 responses
+3.Binding source parameter inference
+4.Multipart/form-data request inference
+5.Problem details for error status codes
+
+Route:-
+	In the given Example the Route Attribute specifying that our controller is responsible for the request landed on the path api/{controller name} and HttpGet 
+attributes tells that this action method is httpget request method.
+
+Route Parameters:-
+	Route parameters are the parameters that are given to the route on the order to do any action. 
+For example
+routes.MapHttpRoute(
+    name: "API Default",
+    routeTemplate: "api/{controller}/{id}",
+    defaults: new { id = RouteParameter.Optional }
+);
+In the given example the id in the route is optional if the route have the id then on the controller the getbyid, put and delete methods can be perform.
+
+Http Verbs:-
+
+HTTP Verb	URI Path	Action		Parameter
+GET		api/products	GetAllProducts	(none)
+GET		api/products/4	GetProductById	4
+DELETE		api/products/4	DeleteProduct	4
+POST		api/products	(no match)	
+
+Query Parameters:
+	In .Net Core Webapi, Query Parameters are used to pass data to the server- side from the url.These parameters are typically included after the question mark (?)
+in the URL and separated by ampersands (&). Here's how you can work with query parameters in a .NET Core Web API
+
+For Example:
+
+[HttpGet("items")]
+public IActionResult GetItems([FromQuery] string keyword, [FromQuery] int page, [FromQuery] int pageSize)
+{
+    // Use the query parameters to filter and paginate data
+    var filteredItems = items.Where(item => item.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+                             .Skip((page - 1) * pageSize)
+                             .Take(pageSize)
+                             .ToList();
+
+    // Return the filtered and paginated result
+    return Ok(filteredItems);
+}
+
+When the user makes the request the url will be like this GET /api/items?keyword=searchterm&page=1&pageSize=10
+This URL includes the keyword, page, and pageSize query parameters. When the request is made, ASP.NET Core will automatically bind these values to the corresponding
+method parameters.
+
+Custom Routing Paths:
+
+In a .NET Core Web API, you can customize the routing paths for your controller methods using the [Route] attribute.
+
+For Example:
+
+[Route("api/[controller]")]
+[ApiController]
+public class ItemsController : ControllerBase
+{
+[HttpGet("all")]
+public IActionResult GetAllItems()
+{
+    // Your code to get all items
+}
+
+[HttpGet("{id}")]
+public IActionResult GetItemById(int id)
+{
+    // Your code to get an item by ID
+}
+
+[HttpPost("create")]
+public IActionResult CreateItem([FromBody] Item newItem)
+{
+    // Your code to create a new item
+}
+
+[HttpPut("{id}")]
+public IActionResult UpdateItem(int id, [FromBody] Item updatedItem)
+{
+    // Your code to update an item
+}
+
+[HttpDelete("{id}")]
+public IActionResult DeleteItem(int id)
+{
+    // Your code to delete an item
+}
+}
+
+In the following example: to retrieve all items, you can make a GET request to:
+http://localhost:5000/api/items/all
+To create a new item, you can make a POST request to:
+http://localhost:5000/api/items/create
+

@@ -1,0 +1,91 @@
+Repository Pattern:
+
+The Repository Pattern in .NET Core is a design pattern commonly used to abstract and isolate the data access code from the rest of the application. It helps in 
+achieving separation of concerns and makes your code more maintainable and testable. This pattern is particularly useful when working with databases, but it can be 
+adapted for other data sources as well.
+
+Here's how you can implement the Repository Pattern in a .NET Core application:
+
+1.Define Your Repository Interface:
+Start by creating an interface that defines the basic CRUD (Create, Read, Update, Delete) operations that your data source will support. 
+
+For example:
+
+public interface IRepository<T>
+{
+    IEnumerable<T> GetAll();
+    T GetById(int id);
+    void Add(T entity);
+    void Update(T entity);
+    void Delete(T entity);
+}
+
+2.Create a Concrete Repository:
+Implement the repository interface with a concrete class that interacts with your data source (e.g., a database, web service, or file system). This class should
+contain the actual data access code. 
+
+For example:
+
+public class UserRepository : IRepository<User>
+{
+    private readonly DbContext _context;
+
+    public UserRepository(DbContext context)
+    {
+        _context = context;
+    }
+
+    public IEnumerable<User> GetAll()
+    {
+        return _context.Users.ToList();
+    }
+
+    public User GetById(int id)
+    {
+        return _context.Users.Find(id);
+    }
+
+    public void Add(User user)
+    {
+        _context.Users.Add(user);
+        _context.SaveChanges();
+    }
+
+    public void Update(User user)
+    {
+        _context.Users.Update(user);
+        _context.SaveChanges();
+    }
+
+    public void Delete(User user)
+    {
+        _context.Users.Remove(user);
+        _context.SaveChanges();
+    }
+}
+
+3.Inject the Repository:
+
+In your application's services or controllers, inject the repository interface using dependency injection. This allows you to use the repository methods without
+worrying about the specific implementation details.
+
+public class UserService
+{
+    private readonly IRepository<User> _userRepository;
+
+    public UserService(IRepository<User> userRepository)
+    {
+        _userRepository = userRepository;
+    }
+
+    // Use _userRepository to perform CRUD operations on users.
+}
+
+4. Register Dependencies:
+
+Register your repository and its implementation in the startup configuration of your .NET Core application. You can use built-in dependency injection for this.
+
+services.AddScoped<IRepository<User>, UserRepository>();
+
+Now, you can use the UserService or other services that depend on the repository to interact with your data source while keeping your application's core logic 
+separate from the data access layer. This makes it easier to switch data sources or perform unit testing with mock repositories.
