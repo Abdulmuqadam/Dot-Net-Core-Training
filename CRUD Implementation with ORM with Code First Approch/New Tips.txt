@@ -1,0 +1,6 @@
+1. Create .Net Core WebApi Project
+2. Install Related Packages
+3. Create Model
+4. Create DbContext Class
+5. Make Migration
+6. Update Db

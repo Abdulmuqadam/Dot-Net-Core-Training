@@ -1,0 +1,17 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = CodeFirstApproch
+build_property.RootNamespace = CodeFirstApproch
+build_property.ProjectDir = F:\Complete Web development turtorial\csharp\.net Core Training\CRUD Implementation with ORM with Code First Approch\CodeFirstApproch\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = F:\Complete Web development turtorial\csharp\.net Core Training\CRUD Implementation with ORM with Code First Approch\CodeFirstApproch
+build_property._RazorSourceGeneratorDebug = 

@@ -1,0 +1,9 @@
+1.Create a New .NET Core WebAPI Project:
+2.Install Entity Framework Core
+3.Define Your Data Model
+4.Create a Database Context
+5.Configure Database Connection
+6.Run Migrations
+7.Use the Database: can use DbContext in ut Controller
+8.API Endpoints: in the Controller
+9.Testing
