@@ -1,0 +1,7 @@
+Followings are the tips and trick to do dbfirst approach in DotNet Core Webapi:
+1. Create a project in vs studio
+2. Create a db and table in sql server
+3. Install required packages like EntityFrameworkCore.SqlServer, EntityFrameworkCore.Tool and Extension.Configuration
+4. Create Model and DbContext by running the command Scaffold-Dbcontext Connection string" Microsoft.EntityFrameworkCore.SqlServer -o Models
+5. Config the Connection String in application.json 
+6. Call the Connection string in the program.cs file and config it

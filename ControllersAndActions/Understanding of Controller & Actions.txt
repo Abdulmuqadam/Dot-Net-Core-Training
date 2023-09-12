@@ -1,5 +1,7 @@
 Scaffolding:-
 	is a technique used to generate code at desgin time to support a number of common application scenarios when working with entity framework core.
+ORM:
+	 a programming technique for converting data between a relational database and the heap of an object-oriented programming language.
 
 Attributes in Controller:
 	The Microsoft.AspNetCore.Mvc namespace provides attributes that can be used to configure the behavior of web API controllers and action methods. 
@@ -69,15 +71,43 @@ In the given example the id in the route is optional if the route have the id th
 
 Http Verbs:-
 
-HTTP Verb	URI Path	Action		Parameter
-GET		api/products	GetAllProducts	(none)
-GET		api/products/4	GetProductById	4
-DELETE		api/products/4	DeleteProduct	4
-POST		api/products	(no match)	
+There Few types of Http Verbs some of them are:
+1. Get: Get The Data From the Server.
+2. Post: Create a resource in the server.
+3. Put: Update the Resource in the server.
+4. Patch: Partial Update of the resource.
+5. Delete: Delete the resource from the server.
+
+Why not to use one request for different puropse like get to update?
+
+Here are a few key reasons:
+
+1. Idempotence: a property of some operations such that no matter how many times you execute them, you achieve the same result.
+2. Caching: GET requests are often cached by web browsers and intermediaries like proxy servers. Caching is based on the assumption that GET requests do not modify 
+data
+3. Security: GET requests typically include data in the URL, which can be visible in browser history, server logs, and potentially other places.
+4. HTTP Semantics: The HTTP/1.1 specification defines the semantics of different HTTP methods, and GET is explicitly defined as a safe method for retrieving resources.
+
+Body Objects:
+	 "body objects" refer to the data that is sent in the HTTP request body when a client makes a request to the API. This data is typically in JSON or XML format,
+but it can also be in other formats like form data or plain text.
+
+Here's a brief explanation of how body objects are used in a .NET Core Web API
+
+1. HTTP Requests: When a client (e.g., a web browser or another application) sends a request to a Web API endpoint, the request can include data in the request body. 
+This data can be used to provide information or input to the API.
+2. Deserialization: In a .NET Core Web API, the incoming request body data is deserialized into .NET objects. This process converts the JSON or XML data into instances
+of C# classes or objects that can be easily processed and manipulated by the API code.
+3. Model Binding: .NET Core Web API uses model binding to map the incoming request data to the parameters of a controller action method. This allows you to work with 
+the data in a strongly-typed manner.
+4. Processing: Once the data is deserialized and bound to the appropriate model or parameter, you can use it in your API logic. You can perform operations on the data,
+validate it, and use it to generate responses.
+5.HTTP Responses: After processing the request, the API typically returns an HTTP response to the client. This response may also include data in the response body, 
+which can be serialized from .NET objects to the desired format (e.g., JSON or XML) and sent back to the client.
 
 Query Parameters:
-	In .Net Core Webapi, Query Parameters are used to pass data to the server- side from the url.These parameters are typically included after the question mark (?)
-in the URL and separated by ampersands (&). Here's how you can work with query parameters in a .NET Core Web API
+	In .Net Core Webapi, Query Parameters are used to pass data to the server- side from the url.These parameters are typically included after the question mark 
+(?) in the URL and separated by ampersands (&). Here's how you can work with query parameters in a .NET Core Web API
 
 For Example:
 

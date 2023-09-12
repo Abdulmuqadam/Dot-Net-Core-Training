@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "I8kuo0huhojhONGLM8gp78A9cN7JDfUNoJ/X1TgL7Sw=",
+  "Source": "InvokeWebApi",
+  "BasePath": "_content/InvokeWebApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
