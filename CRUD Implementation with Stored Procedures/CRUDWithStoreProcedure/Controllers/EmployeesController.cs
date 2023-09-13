@@ -15,10 +15,18 @@ namespace CRUDWithStoreProcedure.Controllers
             _repository = repository;
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetEmployee(int id)
+        [HttpGet]
+        public IActionResult GetEmployees()
         {
-            var employee = _repository.GetEmployee(id);
+            var employees = _repository.GetEmployees();
+            return Ok(employees);
+        }
+
+
+        [HttpGet("{id}")]
+        public IActionResult GetEmployeeById(int id)
+        {
+            var employee = _repository.GetEmployeeById(id);
             if (employee == null)
             {
                 return NotFound();

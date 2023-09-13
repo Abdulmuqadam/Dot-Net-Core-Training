@@ -14,9 +14,15 @@ namespace CRUDWithStoreProcedure.Interfaces
             _context = context;
         }
 
-        public Employee GetEmployee(int employeeID)
+        public List<Employee> GetEmployees()
+        {            
+            var employees = _context.Employees.FromSqlRaw("EXEC GetEmployees").ToList();            
+            return employees;
+        }
+
+        public Employee GetEmployeeById(int employeeID)
         {
-            var employees = _context.Employees.FromSqlRaw("EXEC GetEmployee @EmployeeID",
+            var employees = _context.Employees.FromSqlRaw("EXEC GetEmployeeById @EmployeeID",
                 new SqlParameter("@EmployeeID", employeeID)
             ).ToList();
 
