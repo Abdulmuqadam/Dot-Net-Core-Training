@@ -29,5 +29,32 @@ namespace CRUDWithStoreProcedure.Interfaces
                 return null;
             }
         }
+
+        public void CreateEmployee(Employee employee)
+        {
+            _context.Database.ExecuteSqlRaw("EXEC CreateEmployee @FirstName, @LastName, @Email, @Salary",
+            new SqlParameter("@FirstName", employee.FirstName),
+            new SqlParameter("@LastName", employee.LastName),
+            new SqlParameter("@Email", employee.Email),
+            new SqlParameter("@Salary", employee.Salary));
+        }
+
+        public void UpdateEmployee(Employee employee)
+        {            
+            _context.Database.ExecuteSqlRaw("EXEC UpdateEmployee @EmployeeID, @FirstName, @LastName, @Email, @Salary",
+                new SqlParameter("@EmployeeID", employee.EmployeeID),
+                new SqlParameter("@FirstName", employee.FirstName),
+                new SqlParameter("@LastName", employee.LastName),
+                new SqlParameter("@Email", employee.Email),
+                new SqlParameter("@Salary", employee.Salary)
+            );
+        }
+
+        public void DeleteEmployee(int employeeID)
+        {           
+            _context.Database.ExecuteSqlRaw("EXEC DeleteEmployee @EmployeeID",
+                new SqlParameter("@EmployeeID", employeeID)
+            );
+        }
     }
 }
