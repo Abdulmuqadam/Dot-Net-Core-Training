@@ -1,0 +1,101 @@
+Exception:
+	is referred to the condition and event that occur during the execution of the program and interrupt the normal flow of the program.
+
+Exception Handling:
+	is a crucial for ensuring the robustness and reliablity of your api. Proper exception handling allows you to gracefully handle errors, return 
+meaningfull responses to clients and log necessary information for debugging and monitoring.
+
+Here are the steps and best practices for implementing exception handling in a .Net core Web Api:
+
+1.Global Exception Handling:
+	You can set up global exception handling for your webapi using middleware and filters. Middleware s used to handle exceptions globally in the pipline, while 
+filters can be applied at the controller or action level.
+
+Middleware:
+	You can ceate a custom middleware to catch unhandled exceptions and convert tem into Http respnse with appropriate statuss codes and eorror messages
+Here is example of middleware:
+
+public class ExceptionMiddleware
+{
+    private readonly RequestDelegate _next;
+
+    public ExceptionMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
+        {
+            await _next(context);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception
+            // Handle the exception and return an appropriate response
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync(JsonConvert.SerializeObject(new { error = "An error occurred." }));
+        }
+    }
+}
+
+To use this middleware, add it to your configuration file
+
+app.UseMiddleware<ExceptionMiddleware>();
+
+Filters:
+	You can use action filters or exception filters to handle exceptions at the controller or action level. These filters can be applied using attributes and 
+allow you to customize exception handling logic for specific endpoints.
+
+2.Using try and catch blocks:
+	Within your controller actions or service methods, use try-catch blocks to catch and handle exceptions specific to that action or method. You can log the 
+exceptions and return appropriate HTTP responses
+
+Here is the example:
+
+[HttpGet("{id}")]
+public ActionResult<User> GetUser(int id)
+{
+    try
+    {
+        var user = _userService.GetUserById(id);
+        if (user == null)
+        {
+            return NotFound(); // 404 Not Found
+        }
+
+        return Ok(user); // 200 OK
+    }
+    catch (Exception ex)
+    {
+        // Log the exception
+        return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred.");
+    }
+}
+
+3.Logging:
+	Always log exceptions to assist in debugging and monitoring. .NET Core provides a built-in logging framework that you can configure to log exceptions to 
+various outputs like files, databases, or external logging services like Serilog or NLog.
+
+4.Custom Exceptions:
+	Define custom exception classes that inherit from Exception to represent specific error conditions in your application. These custom exceptions can help you 
+differentiate between different types of errors and handle them accordingly
+
+Here is Example:
+public class CustomNotFoundException : Exception
+{
+    public CustomNotFoundException(string message) : base(message)
+    {
+    }
+}
+Then, throw and catch these custom exceptions in your code as needed.
+
+5.Return Meaningful Error Responses:
+	When an exception occurs, return meaningful error responses to the client, including appropriate HTTP status codes and error messages in a standardized format 
+(e.g., JSON).
+
+6.Unit Testing:
+	Ensure that you have unit tests in place to verify the exception handling logic in your Web API. Test different scenarios, including cases where exceptions 
+are expected to be thrown.

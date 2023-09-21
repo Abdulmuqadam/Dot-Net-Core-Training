@@ -1,0 +1,44 @@
+Diff btw Authentication and authorization:
+Authentication:
+	is a process of verifying the user by it given credentials which are stored
+Example: When you log in to a web service using your username and password, you are authenticating yourself. The service checks if the provided credentials match the 
+stored user information to verify your identity.
+
+Autherization:
+	is a process of come after the authentication and determines what actions or resources an authenticated user or system is allowed to access.
+Example: In a RESTful API, even if a user has successfully authenticated, they might not be authorized to perform certain actions. For instance, a regular user may be 
+authorized to read data but not to update or delete it, while an admin user has broader access.
+
+Types of authentication:
+There are three types of authentication:
+.Basic Auth
+.Jwt Auth
+.Role Based Auth
+
+Basic Auth in Asp.Net WebAPi:
+Disadvantages:
+>User credentials are sent in the request.
+>Credentials are sent as plaintext.
+>Credentials are sent with every request.
+>No way to log out, except by ending the browser session.
+>Vulnerable to cross-site request forgery (CSRF); requires anti-CSRF measures.
+Advantages:
+>Internet standard
+>Supported by all major browsers
+>Relatively simple protocol.
+
+Basic Authentication works as follows:
+1. If a request authentication, the server returns 401 (Unauthorized). The response includes a WWW-Authenticate header, indicating the server supports Basic 
+authentication.
+2. The client sends another request with the client credentials in the Authorization header. The credentials are formatted as the string "name:password:, 
+base64-encodeed. The credentials are not encrypted.
+
+Basic Authentication Scheme
+.is a simple and widely supported authentication scheme.
+.it involves sending the username and password as credentials with each request.
+.Credentials are abse64 encoded and sent in the authorization header of the request as basic.
+.server verifies the credentials by decoding the base64 encoded string and checking against a user or auth provider.
+.if credentials are valid the server grants access to the requested resource.
+.Basic auth does not provide state or session management each request requires he credentials to be sent.
+.the main advantage of basic authentication is its simplicity but it lacks in security as the credentials are sent with each request in base64 encoding (which
+can be easily decoded).

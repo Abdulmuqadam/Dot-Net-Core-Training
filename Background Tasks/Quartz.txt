@@ -1,0 +1,33 @@
+Quartz.NET:
+	Quartz.NET is a powerful scheduling library that allows you to create complex scheduling scenarios. You can use Quartz.NET to schedule jobs in your WebAPI 
+application. To get started, you need to install the Quartz NuGet package and configure it in your application. Here's a basic example:
+
+// Install the Quartz NuGet package
+// Configure Quartz in Startup.cs
+public void ConfigureServices(IServiceCollection services)
+{
+    // ...
+    services.AddQuartz(q =>
+    {
+        q.UseMicrosoftDependencyInjectionJobFactory();
+
+        q.AddJob<YourJobClass>(j => j.WithIdentity("your-job"));
+        q.AddTrigger(t => t
+            .ForJob("your-job")
+            .WithIdentity("your-job-trigger")
+            .WithCronSchedule("0/30 * * * * ?")); // Example: Run every 30 seconds
+    });
+
+    services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
+    // ...
+}
+
+// Create your job class
+public class YourJobClass : IJob
+{
+    public Task Execute(IJobExecutionContext context)
+    {
+        // Your job logic here
+        return Task.CompletedTask;
+    }
+}

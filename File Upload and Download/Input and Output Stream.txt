@@ -1,0 +1,82 @@
+Input and output Stream:
+	In a C# .NET Core WebAPI, you can use input and output streams to handle data, including files or other binary data, when sending or receiving HTTP requests. Input streams are typically used to read data from incoming requests, while output streams are used to send data as responses. 
+Here's how you can work with input and output streams in a .NET Core WebAPI:
+
+>Input Streams (Reading Data)
+
+1.Reading from Request Body:
+	You can read data from the request body using the Request.Body stream. For example, to read a JSON object from the request body:
+
+[HttpPost("example")]
+public async Task<IActionResult> ReadFromBody()
+{
+    using (StreamReader reader = new StreamReader(Request.Body))
+    {
+        var requestBody = await reader.ReadToEndAsync();
+        // Process the requestBody (e.g., parse JSON, perform operations)
+        return Ok(requestBody);
+    }
+}
+In this example, we read the entire request body into a string and then process it as needed.
+
+2.Reading from Form Data:
+	To read data from form data, you can use the IFormFile interface for file uploads or the FormCollection for other form fields. For example, to handle file uploads:
+
+[HttpPost("upload")]
+public async Task<IActionResult> UploadFile()
+{
+    var formFile = Request.Form.Files[0]; // Assuming it's the first file in the form
+
+    if (formFile != null && formFile.Length > 0)
+    {
+        // Process the uploaded file (e.g., save to disk, store in database)
+        // You can also access form fields using Request.Form
+        return Ok("File uploaded successfully");
+    }
+
+    return BadRequest("Invalid file");
+}
+
+>Output Streams (Sending Data)
+
+1.Sending Data in Response:
+	You can use the Response.Body stream to send data in the response. For example, to send a JSON response:
+
+[HttpGet("example")]
+public async Task<IActionResult> SendResponse()
+{
+    var data = new { message = "Hello, World!" };
+    var json = JsonConvert.SerializeObject(data);
+
+    Response.ContentType = "application/json";
+    await Response.WriteAsync(json);
+
+    return Ok();
+}
+
+In this example, we set the response content type and write the JSON data to the response body.
+
+2.Streaming Large Files:
+	When you need to stream large files (e.g., video, audio), it's efficient to use the Response.Body stream along with Stream methods. This allows you to read and write in chunks, reducing memory usage. Here's an example of streaming a large file:
+
+[HttpGet("largefile")]
+public async Task<IActionResult> StreamLargeFile()
+{
+    var filePath = "path/to/largefile.mp4";
+
+    using (var stream = new FileStream(filePath, FileMode.Open))
+    {
+        var buffer = new byte[4096]; // 4KB buffer size
+        int bytesRead;
+
+        while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+        {
+            await Response.Body.WriteAsync(buffer, 0, bytesRead);
+            await Response.Body.FlushAsync();
+        }
+    }
+
+    return File("application/octet-stream"); // Set the appropriate content type
+}
+
+In this example, we read the file in chunks and write them to the response body. Adjust the buffer size based on your requirements.

@@ -1,0 +1,45 @@
+Web Sockets:
+	are the one of the transport protocols that SignalR can use to establish and maintain a real-time, bidirectional connection between a web server and web clients. WebSockets provide a more efficient and low-latency way of achieving real-time communication compared to traditional Http polling.
+
+Here's how WebSockets work in SignalR:
+
+1.WebSocket Transport:
+	When a client connects to a SignalR hub, the client and server negotiate which transport protocol to use. If both the client and server support WebSockets, they will establish a WebSocket connection.
+WebSockets provide full-duplex communication, meaning that both the client and server can send messages to each other simultaneously over a single connection.
+
+2.Advantages of WebSockets:
+	Low Latency: WebSockets are designed for low-latency communication, making them ideal for real-time scenarios.
+Reduced Overhead: Unlike traditional HTTP polling, WebSockets don't have the overhead of opening and closing multiple connections, reducing network traffic.
+Bi-Directional: WebSockets allow both the server and client to send messages to each other without the need for explicit requests from the client.
+
+3.Fallback Mechanisms:
+	While WebSockets are the preferred transport due to their efficiency, SignalR is designed to gracefully fall back to other transport methods (such as Server-Sent Events or long polling) if WebSockets are not supported or allowed by the network infrastructure. This ensures that real-time communication can still happen, albeit with slightly higher latency.
+
+4.Configuration:
+	To use WebSockets in SignalR, you typically don't need to do much configuration. The negotiation and setup are handled automatically by SignalR. However, you can configure settings like the WebSocket URL or enable/disable WebSockets in your SignalR configuration if needed.
+
+5.Browser and Server Support:
+	Most modern web browsers support WebSockets, which allows for seamless real-time communication in web applications. SignalR on the server-side also provides WebSocket support.
+
+Here's an example of how you can configure a SignalR hub to use WebSockets in a .NET Core application:
+
+public void ConfigureServices(IServiceCollection services)
+{
+    // ...
+    services.AddSignalR();
+}
+
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    // ...
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapHub<RealTimeHub>("/realtimehub");
+
+        // ...
+    });
+}
+
+In this example, the MapHub method maps the RealTimeHub to the URL "/realtimehub," and SignalR will automatically negotiate and use WebSockets if supported by the client and server.
+
+WebSockets in SignalR are a powerful tool for building real-time features in web applications, offering low-latency, bidirectional communication that enhances user experiences in scenarios like chat applications, live updates, online gaming, and more.

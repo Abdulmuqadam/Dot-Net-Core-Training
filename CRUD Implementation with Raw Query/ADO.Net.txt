@@ -1,0 +1,31 @@
+ADO.NET: 
+	which stands for Active Data Objects for .NET, is a technology used in Microsoft's .NET framework for working with data from various sources such as databases, 
+XML, and more. It provides a set of classes and libraries that allow developers to interact with data in a flexible and efficient manner.
+
+ADO.NET consists of several key components:
+
+Connection: 
+	ADO.NET allows you to establish connections to data sources like databases. You can specify the type of database you want to connect to (e.g., SQL Server, 
+Oracle, MySQL) and provide connection details.
+
+Command: 
+	You can create commands to execute SQL queries or stored procedures against the connected data source. ADO.NET supports various types of commands, including 
+SqlCommand, OleDbCommand, and OracleCommand.
+
+DataReader: 
+	The DataReader allows you to efficiently read data from a data source one record at a time. It's a forward-only, read-only cursor that minimizes memory usage.
+
+DataSet: 
+	A DataSet is an in-memory representation of data retrieved from a data source. It can contain multiple DataTables, each of which represents a table of data. 
+You can perform various operations on the data within a DataSet, such as filtering, sorting, and relating tables.
+
+DataAdapter: 
+	The DataAdapter acts as a bridge between a DataSet and a data source. It facilitates the transfer of data between the two, including retrieving data from the 
+data source into a DataSet and updating changes made in the DataSet back to the data source.
+
+Connection Pooling: 
+	ADO.NET includes connection pooling, which helps manage and reuse database connections to improve performance and resource utilization.
+
+ADO.NET is commonly used for developing database-driven applications in .NET, such as web applications, desktop applications, and services. It provides a flexible and 
+efficient way to work with data, making it a fundamental part of data access in the .NET ecosystem. Developers can choose from different data providers (e.g., 
+System.Data.SqlClient for SQL Server, System.Data.OracleClient for Oracle) based on the specific data source they are working with.

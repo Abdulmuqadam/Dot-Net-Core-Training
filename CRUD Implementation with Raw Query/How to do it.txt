@@ -1,0 +1,7 @@
+Followings are the tips and tricks about RawQuery Crud App
+1. Create the Project
+2. Install required Packages
+3. Create model and perform migrations
+4. Create respository to implement the raw query methods
+5. Create the controller that contain the repository to perform function
+6. test the api.

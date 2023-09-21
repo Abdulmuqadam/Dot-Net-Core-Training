@@ -1,0 +1,35 @@
+Using Hosted Services:
+	In .NET Core, you can create hosted services that run in the background. This approach is ideal for long-running or recurring tasks. To implement a hosted 
+service, you'll need to create a class that implements the IHostedService interface.
+
+public class MyBackgroundService : IHostedService
+{
+    private readonly ILogger<MyBackgroundService> _logger;
+
+    public MyBackgroundService(ILogger<MyBackgroundService> logger)
+    {
+        _logger = logger;
+    }
+
+    public Task StartAsync(CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("MyBackgroundService is starting.");
+        // Start your background task here
+        return Task.CompletedTask;
+    }
+
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("MyBackgroundService is stopping.");
+        // Stop your background task here
+        return Task.CompletedTask;
+    }
+}
+
+Register the hosted service in Startup.cs:
+
+public void ConfigureServices(IServiceCollection services)
+{
+    // Add hosted service
+    services.AddHostedService<MyBackgroundService>();
+}

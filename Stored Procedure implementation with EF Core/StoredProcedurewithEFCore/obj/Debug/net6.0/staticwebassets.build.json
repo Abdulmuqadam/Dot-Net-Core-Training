@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "tYJYZorVX4NC+Vk3d/2qWAWtaDy7iFu5tu1fpXoo2uA=",
+  "Source": "StoredProcedurewithEFCore",
+  "BasePath": "_content/StoredProcedurewithEFCore",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

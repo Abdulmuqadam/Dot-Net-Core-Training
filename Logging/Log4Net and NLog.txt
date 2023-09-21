@@ -1,0 +1,118 @@
+Log4net and NLog:
+	are popular third-party logging frameworks that can be used in .NET Core WebAPI applications to handle logging. Here's how you can set up and use both Log4net 
+and NLog in a .NET Core WebAPI project:
+
+Using Log4net:
+
+Install Log4net Package: 
+	You need to install the Log4net package from NuGet. You can do this using the Package Manager Console or by adding a reference to Log4net in your project's 
+.csproj file.
+Install-Package log4net
+
+Configure Log4net: 
+	In your project, create a log4net configuration file (e.g., log4net.config) to specify how log messages should be handled. Here's a sample configuration:
+
+<?xml version="1.0" encoding="utf-8" ?>
+<log4net>
+  <root>
+    <level value="INFO" />
+    <appender-ref ref="ConsoleAppender" />
+  </root>
+  <appender name="ConsoleAppender" type="log4net.Appender.ConsoleAppender">
+    <layout type="log4net.Layout.PatternLayout">
+      <conversionPattern value="%date [%thread] %level %logger - %message%newline" />
+    </layout>
+  </appender>
+</log4net>
+
+Initialize Log4net: 
+	In your application's entry point (e.g., Startup.cs), configure Log4net by calling XmlConfigurator.Configure() with the path to your configuration file.
+
+using log4net;
+using log4net.Config;
+// ...
+
+public class Startup
+{
+    public Startup(IConfiguration configuration)
+    {
+        Configuration = configuration;
+        XmlConfigurator.Configure(new FileInfo("log4net.config"));
+    }
+    // ...
+}
+
+Inject ILogger: 
+	In your controllers or services, inject an ILogger instance as you would with the built-in logging framework.
+
+using Microsoft.Extensions.Logging;
+using log4net;
+// ...
+
+public class MyController : ControllerBase
+{
+    private readonly ILogger<MyController> _logger;
+
+    public MyController(ILogger<MyController> logger)
+    {
+        _logger = logger;
+    }
+
+    // ...
+}
+
+Using NLog:
+
+Install NLog Package: 
+	You need to install the NLog package from NuGet. You can do this using the Package Manager Console or by adding a reference to NLog in your project's .csproj 
+file.
+Install-Package NLog.Web
+
+Configure NLog: 
+	In your project, create an NLog configuration file (e.g., nlog.config) to specify how log messages should be handled. Here's a sample configuration:
+
+<?xml version="1.0" encoding="utf-8" ?>
+<nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <targets>
+    <target name="file" xsi:type="File" fileName="log.txt" />
+  </targets>
+  <rules>
+    <logger name="*" minlevel="Info" writeTo="file" />
+  </rules>
+</nlog>
+
+Initialize NLog: 
+	In your application's entry point (e.g., Startup.cs), configure NLog by calling UseNLog().
+
+using NLog.Web;
+// ...
+
+public class Startup
+{
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
+    {
+        // ...
+        app.UseNLog(); // Add this line to configure NLog
+        // ...
+    }
+}
+
+Inject ILogger: 
+	In your controllers or services, inject an ILogger instance as you would with the built-in logging framework.
+
+using Microsoft.Extensions.Logging;
+// ...
+
+public class MyController : ControllerBase
+{
+    private readonly ILogger<MyController> _logger;
+
+    public MyController(ILogger<MyController> logger)
+    {
+        _logger = logger;
+    }
+
+    // ...
+}
+Use NLog for Logging: 
+	Use the _logger instance to log messages and errors as needed. NLog will handle the actual logging based on your configuration.

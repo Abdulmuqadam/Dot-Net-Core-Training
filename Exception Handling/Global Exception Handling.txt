@@ -1,0 +1,52 @@
+Global Exception Handling:
+	is a mechanism in C# .NET Core (and ASP.NET Core) that allows you to catch and handle unhandled exceptions that occur during the processing of a web request 
+at a centralized location, typically at the application level. This is useful for logging, custom error responses, and ensuring that your application doesn't crash 
+due to unhandled exceptions.
+
+Here's how to implement global exception handling in a .Net Core WebApi:
+
+Create a Custom Exception Middleware:
+	To handle exceptions globally, you can create a custom middleware class. This middleware class should be added to the ASP.NET Core pipeline and should catch 
+exceptions that occur during request processing. You can then log these exceptions and return appropriate error responses.
+
+Here's an example of a global exception handling middleware:
+
+public class ExceptionMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly ILogger<ExceptionMiddleware> _logger;
+
+    public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
+    {
+        _next = next;
+        _logger = logger;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
+        {
+            await _next(context);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"An exception occurred: {ex}");
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync(JsonConvert.SerializeObject(new { error = "An error occurred." }));
+        }
+    }
+}
+
+Register the Exception Middleware:
+	To use the custom exception middleware, you need to register it in the Startup.cs class within the Configure method. 
+Add the following line:
+app.UseMiddleware<ExceptionMiddleware>();
+
+Configure Logging:
+	In the ExceptionMiddleware, you can see that it logs exceptions using a logger. Make sure you have configured a logging provider like Serilog, NLog, or the 
+built-in logging system according to your preferences. Logging is crucial for diagnosing issues and monitoring your application.
+
+Return Consistent Error Responses:
+	In the middleware, you set the HTTP status code and return a JSON response to the client. You should tailor these responses to be consistent across your API 
+so that clients can easily handle errors. Consider creating custom error classes and serializing them to JSON for more structured error responses.

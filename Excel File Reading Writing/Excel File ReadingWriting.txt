@@ -1,0 +1,102 @@
+To read and write Excel files in a .NET Core Web API using C#, you can use the EPPlus library, which is a popular library for working with Excel files. Here's a step-by-step guide on how to do it:
+
+Step 1: Create a .NET Core Web API Project
+	You can create a new .NET Core Web API project using Visual Studio or the command line.
+
+Step 2: Install EPPlus
+	In your project, you need to install the EPPlus library. You can do this using NuGet Package Manager or by adding the following package reference in your project file:
+
+<PackageReference Include="EPPlus" Version="5.5.0" />
+Make sure to check the latest version on NuGet as it might have been updated since my last knowledge update in September 2021.
+
+Step 3: Create a Controller
+	Create a new controller that will handle Excel file operations. You can name it something like "ExcelController."
+
+using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml;
+using System;
+using System.IO;
+using System.Threading.Tasks;
+
+namespace ExcelWebApi.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ExcelController : ControllerBase
+    {
+        [HttpGet]
+        public IActionResult Get()
+        {
+            // Implement code to read Excel file and return data
+            // Example: ReadExcelFile();
+            return Ok("Excel data retrieved successfully.");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadExcel([FromForm] IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        // Implement code to process the Excel file
+                        // Example: ProcessExcelFile(package);
+                    }
+                }
+
+                return Ok("Excel file uploaded and processed successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
+        }
+    }
+}
+In this controller, you have two methods: Get for reading data from an Excel file and UploadExcel for uploading and processing an Excel file.
+
+Step 4: Implement Reading and Writing Logic
+	In the Get and UploadExcel methods, you can implement the logic to read and write Excel files using EPPlus. Here are some simplified examples:
+
+private void ReadExcelFile()
+{
+    using (var package = new ExcelPackage(new FileInfo("path_to_your_excel_file.xlsx")))
+    {
+        var worksheet = package.Workbook.Worksheets[0];
+        for (int row = 1; row <= worksheet.Dimension.Rows; row++)
+        {
+            // Read data from Excel cells
+            var cellValue = worksheet.Cells[row, 1].Value.ToString();
+            // Process the data as needed
+        }
+    }
+}
+
+private void ProcessExcelFile(ExcelPackage package)
+{
+    var worksheet = package.Workbook.Worksheets[0];
+    // Process Excel data, e.g., save it to a database, manipulate it, etc.
+}
+Remember to adapt the reading and writing logic according to your specific requirements.
+
+Step 5: Configure File Upload
+	In your Startup.cs file, make sure you have configured file uploads correctly. Add the following code to the ConfigureServices method:
+
+services.AddControllers();
+services.Configure<IISServerOptions>(options =>
+{
+    options.AllowSynchronousIO = true; // Enable synchronous I/O for file upload
+});
+
+Step 6: Test Your Web API
+	Now you can run your Web API project and test the Excel file reading and writing functionality using tools like Postman or a simple HTML form for file uploads.
+
+That's it! You have created a .NET Core Web API for reading and writing Excel files using EPPlus. Remember to add error handling, validation, and any additional features you need to make your API robust and secure.

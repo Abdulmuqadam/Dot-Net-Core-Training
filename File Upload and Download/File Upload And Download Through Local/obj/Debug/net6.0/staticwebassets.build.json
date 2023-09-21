@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "GRGwENiFcw9erTJvvmJjUBwQ7/jWcRqEc3Gk5lY11iE=",
+  "Source": "FileUploadAndDownloadThroughLocal",
+  "BasePath": "_content/FileUploadAndDownloadThroughLocal",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -8,9 +8,9 @@ namespace CRUDWithStoreProcedure.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly EmployeeRepository _repository;
+        private readonly EmployeeService _repository;
 
-        public EmployeesController(EmployeeRepository repository)
+        public EmployeesController(EmployeeService repository)
         {
             _repository = repository;
         }

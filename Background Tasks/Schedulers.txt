@@ -1,0 +1,72 @@
+Schedulers:
+	In a C#.NET Core WebAPI application, you can use schedulers to manage and control the execution of background tasks or recurring jobs. There are various 
+approaches and libraries you can use for scheduling tasks in a .NET Core WebAPI application. Here are a few options:
+
+Hangfire:
+	Hangfire is a popular library for scheduling background tasks in ASP.NET Core applications, including WebAPI. It provides a simple and easy-to-use API for 
+creating background jobs. To use Hangfire, you need to install the Hangfire NuGet package and configure it in your application. Here's a basic example:
+
+// Install the Hangfire NuGet package
+// Configure Hangfire in Startup.cs
+public void ConfigureServices(IServiceCollection services)
+{
+    // ...
+    services.AddHangfire(config => config.UseSqlServerStorage("connectionString"));
+    // ...
+}
+
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    // ...
+    app.UseHangfireDashboard();
+    app.UseHangfireServer();
+    // ...
+}
+
+// Create a background job
+BackgroundJob.Enqueue(() => SomeMethodToExecuteInBackground());
+
+Quartz.NET:
+	Quartz.NET is a powerful scheduling library that allows you to create complex scheduling scenarios. You can use Quartz.NET to schedule jobs in your WebAPI 
+application. To get started, you need to install the Quartz NuGet package and configure it in your application. Here's a basic example:
+
+// Install the Quartz NuGet package
+// Configure Quartz in Startup.cs
+public void ConfigureServices(IServiceCollection services)
+{
+    // ...
+    services.AddQuartz(q =>
+    {
+        q.UseMicrosoftDependencyInjectionJobFactory();
+
+        q.AddJob<YourJobClass>(j => j.WithIdentity("your-job"));
+        q.AddTrigger(t => t
+            .ForJob("your-job")
+            .WithIdentity("your-job-trigger")
+            .WithCronSchedule("0/30 * * * * ?")); // Example: Run every 30 seconds
+    });
+
+    services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
+    // ...
+}
+
+// Create your job class
+public class YourJobClass : IJob
+{
+    public Task Execute(IJobExecutionContext context)
+    {
+        // Your job logic here
+        return Task.CompletedTask;
+    }
+}
+
+Timer-based approach:
+	You can use the built-in .NET System.Threading.Timer class to schedule tasks in your WebAPI application. This approach is suitable for simple periodic tasks. 
+Here's an example:
+
+var timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(15)); // Execute DoWork every 15 minutes
+
+private void DoWork(object state)
+{
+    // Your task logic here
+}

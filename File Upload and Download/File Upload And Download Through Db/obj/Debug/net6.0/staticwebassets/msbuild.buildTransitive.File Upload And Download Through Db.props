@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\File Upload And Download Through Db.props" />
+</Project>

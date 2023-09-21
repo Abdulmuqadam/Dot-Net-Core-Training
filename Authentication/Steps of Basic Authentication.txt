@@ -1,0 +1,7 @@
+These are the steps required for the Basic Authentication:
+1.Enable Authentication adding "useAuthentication"
+2.Create Authentication header
+3.Implement AuthenticationSchemeoptions
+4.Get Authoriztion Header using Authorizationheadervalue
+5.Based on the data create ticket
+6.Return the response

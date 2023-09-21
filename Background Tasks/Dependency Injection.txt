@@ -1,0 +1,17 @@
+Dependency Injection:
+	In C# .NET Core Web API development, Dependency Injection (DI) is a fundamental concept that helps manage the instantiation and sharing of objects or services throughout your application. Three common lifetimes for dependencies in DI are Singleton, Scoped, and Transient. Let's dive into each of them:
+
+1.Singleton:
+	.A singleton dependency is created only once during the lifetime of the application and reused for all subsequent requests.
+	.it's suitable for objects or servicees that should be shared across the entire application.
+	.Singleton dependencies are registerred using the AddSingleton method on the DI container. Like services.AddSingleton<IMyService, MyService>();
+
+2.Scoped:
+	.A Scoped dependency is created once per HTTP request (or any scope) and is shared within that scope. It gets disposed of at the end of the scope.
+	.Scoped dependencies are often used in web applications like ASP.NET Core, where you want to maintain state within a single HTTP request.
+	.Scoped dependencies are registered using the AddScoped method in the DI container.Like services.AddScoped<IMyService, MyService>();
+
+3.Transient:
+	.A Transient dependency is created every time it is requested. It is not shared or reused.
+	.Transient dependencies are suitable for objects or services that are stateless and should not be shared among multiple clients.
+	.Transient dependencies are registered using the AddTransient method in the DI container. Like services.AddTransient<IMyService, MyService>();

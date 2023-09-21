@@ -1,0 +1,7 @@
+Following are the tips to implement the Store Procedure Crud App:
+1. Create the Project and install required packages
+2. Create a table and also Create a model class corresponded to the table
+3. Create Store Procedures 
+4. Create DbContext Class
+5. Create Respository With DbContext Class to work with Db.
+6. Create a controller With Repository to interact with user and give data to respository for further processes.

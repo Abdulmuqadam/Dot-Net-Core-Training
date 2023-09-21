@@ -4,3 +4,5 @@
 4. Create DbContext Class
 5. Make Migration
 6. Update Db
+7. Create a controller
+8. See if data is changing in the db.

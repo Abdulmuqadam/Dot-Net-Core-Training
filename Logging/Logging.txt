@@ -1,0 +1,75 @@
+Logging:
+	In C# .NET WebAPI, logging is a fundamental practice for recording important information, errors, and events that occur during the execution of your web API 
+application. Logging helps developers and administrators monitor and troubleshoot issues in production or development environments. It is especially crucial in web 
+API applications to track incoming requests, outgoing responses, and various activities within the application.
+
+Here's how you can implement logging in a C# .NET WebAPI application:
+
+Choose a Logging Framework: 
+	.NET provides various logging frameworks, but the most commonly used one is Microsoft.Extensions.Logging, which is part of the .NET Core and .NET 5+ ecosystem.
+You can also use third-party libraries like Serilog, NLog, or log4net if preferred.
+
+Configure Logging: 
+	You need to configure the logging framework of your choice in your WebAPI application. This usually involves specifying where log messages should be written 
+(e.g., console, files, databases) and setting log levels (e.g., information, warning, error, debug).
+
+Inject ILogger: 
+	In your WebAPI controllers or services, you can inject an ILogger instance. This allows you to log information specific to the current component.
+
+using Microsoft.Extensions.Logging;
+public class MyController : ControllerBase
+{
+    private readonly ILogger<MyController> _logger;
+
+    public MyController(ILogger<MyController> logger)
+    {
+        _logger = logger;
+    }
+
+    [HttpGet]
+    public IActionResult Get()
+    {
+        _logger.LogInformation("Getting data from API.");
+        // ... Your API logic here
+        return Ok();
+    }
+}
+
+Log Messages: 
+	Use the ILogger instance to log messages, errors, or any relevant information at various points in your code. You can log messages with different log levels 
+depending on their severity.
+
+_logger.LogInformation("This is an informational message.");
+_logger.LogWarning("This is a warning message.");
+_logger.LogError("This is an error message.");
+
+Log Exception Details: 
+	When an exception occurs in your API, it's a good practice to log exception details to help diagnose issues
+
+try
+{
+    // Code that may throw an exception
+}
+catch (Exception ex)
+{
+    _logger.LogError(ex, "An error occurred while processing the request.");
+}
+
+Review Logs: 
+	Log messages can be written to various outputs, such as console, files, or databases. Ensure you have a strategy for collecting and reviewing logs, especially 
+in a production environment.
+
+Logging Levels: 
+	Use appropriate log levels (e.g., LogInformation, LogWarning, LogError) to distinguish between different types of log messages. This allows you to filter and 
+prioritize logs based on severity.
+
+Logging in Middleware: 
+	You can also log requests and responses at a global level using middleware, which can be useful for tracking incoming and outgoing traffic.
+
+app.Use(async (context, next) =>
+{
+    _logger.LogInformation($"Received request: {context.Request.Path}");
+    await next();
+    _logger.LogInformation($"Sent response: {context.Response.StatusCode}");
+});
+

@@ -1,0 +1,71 @@
+Exception Filters:
+	Exception filters in C# and ASP.NET Core allow you to handle exceptions that occur during the execution of your code at a more granular level, typically 
+within a controller or action method. These filters give you the ability to customize how you handle exceptions for specific actions, providing more fine-grained 
+control over the error-handling process.
+
+Here's how you can use exception filters in ASP.NET Core:
+
+Create an Exception Filter:
+	First, create a custom exception filter by implementing the IExceptionFilter interface. This interface requires you to implement the OnException method, 
+which is called when an exception occurs within an action method.
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+
+public class CustomExceptionFilter : IExceptionFilter
+{
+    public void OnException(ExceptionContext context)
+    {
+        // Handle the exception
+        // You can log the exception here
+        // You can modify the result or response
+        
+        context.Result = new ObjectResult(new
+        {
+            Error = "An error occurred.",
+            Message = context.Exception.Message
+        })
+        {
+            StatusCode = StatusCodes.Status500InternalServerError
+        };
+        
+        context.ExceptionHandled = true; // Mark the exception as handled
+    }
+}
+
+Register the Exception Filter:
+	You can register your custom exception filter in the Startup.cs class in the ConfigureServices method by adding it to the MVC filters collection. Here's an 
+example:
+
+services.AddControllers(options =>
+{
+    options.Filters.Add<CustomExceptionFilter>(); // Register the custom exception filter
+});
+
+Apply the Exception Filter:
+	To apply the exception filter to a specific action or controller, you can use the [ServiceFilter] attribute or add it globally in the Startup.cs class.
+Applying the filter to an action method:
+
+[ApiController]
+[Route("api/[controller]")]
+public class MyController : ControllerBase
+{
+    [HttpGet]
+    [ServiceFilter(typeof(CustomExceptionFilter))] // Apply the exception filter to this action
+    public IActionResult MyAction()
+    {
+        // Code that may throw exceptions
+    }
+}
+
+Applying the filter globally in Startup.cs:
+
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllers();
+    services.AddScoped<CustomExceptionFilter>(); // Register the custom exception filter
+    services.AddMvc(options =>
+    {
+        options.Filters.AddService<CustomExceptionFilter>(); // Apply the filter globally
+    });
+}
